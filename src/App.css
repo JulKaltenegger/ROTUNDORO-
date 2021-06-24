@@ -1,0 +1,245 @@
+html,
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  sans-serif;
+  background-color: rgb(238,238,238);
+}
+
+.container{
+  margin: 80px 0 0 0;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(50px, 1fr));
+}
+
+.rowheader {
+  display: inline-block;
+  font-weight: 100;
+  font-size: 125%;
+ 
+}
+
+div:nth-child(4) { grid-row-start: 2; }
+div:nth-child(5) { grid-row-start: 3; }
+
+.box {
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 150%;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(5, 2fr);
+  background-color:#fff;
+  font-weight: 200;
+  grid-gap: 30px;
+}
+
+.xeoglcanvas{
+  height:200px;
+  width:200px;
+}
+.nav-container{
+  margin: auto;
+}
+a{
+  text-decoration: none;
+}
+.nav-container svg {
+  color: white
+}
+.flexcontainer{
+  margin: 5px;
+  flex-direction: row;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  height: 88vh;
+  width: 100%;
+}
+.viewerblock{
+  height: 87vh;
+  margin: 5px;
+  max-width: 50vh;
+}
+.viewerblock.middle{
+  width: fit-content;
+  max-width: none;
+}
+.navbutton{
+  width: 2vh;
+  min-width: 14px;
+  height: 87vh;
+  margin-top: 0.5vh;
+  background-color: lightgray;
+  border-radius: 3px;
+  transition: 0.8s;
+  padding: 4px;
+}
+.navbutton:hover{
+  background-color: grey;
+  opacity: 0.8;
+}
+
+.blocktitle{
+  background-color: lightcoral;
+  text-align: center;
+  color: white;
+  width: 100%;
+  box-shadow: 4px 0px 10px 4px grey;
+  opacity: 1;
+  transition: 0.8s;
+}
+.blocktitle:hover {
+  opacity: 0.6;
+}
+.blocktitlesmall{
+  background-color: lightcoral;
+  text-align: left;
+  color: white;
+  width: 100%;
+  height: 12px;
+  opacity: 1;
+  transition: 0.8s;
+  box-shadow: 2px 0px 10px 4px grey;
+  margin-bottom: 8px;
+}
+.ghostedgreen{
+  background-color: lightgreen;
+  color: white;
+  cursor: default;
+}
+
+.nonghosted{
+  cursor: default;
+  border-bottom: solid 1px #eee;
+}
+
+table{
+  /* border-collapse: separate; */
+  /* border-spacing: 2px; */
+  margin: 0 0 40px 0;
+  width: 100%;
+  display: table;
+ 
+}
+
+.tr{
+  display: table-row;
+}
+
+.th{
+  display: table-cell;
+  cursor: default;
+  border-bottom: solid 1px #eee;
+  text-align: left;
+  width:50%;
+  font-size: 12px;
+}
+
+.td{
+  display: table-cell;
+  cursor: default;
+  border-bottom: solid 1px #eee;
+  width:50%;
+  text-align: left;
+  font-size: 12px;
+  /* grid-template-columns: repeat(5, 2fr); */
+}
+
+/*deprecated
+.blocktitlevertical{
+  background-color: lightcoral;
+  text-align: center;
+  text-orientation: sideways;
+  color: white;
+  opacity: 1;
+  transition: 0.8s;
+  border-radius: 4px;
+  following needs to be fixed
+  margin-left: -680%;
+  margin-top: 680%; 
+  
+  
+}
+.blocktitlevertical.left{
+  -webkit-transform: rotate(90.0deg);
+}
+.blocktitlevertical.right{
+  -webkit-transform: rotate(270.0deg);  
+}
+.blocktitlevertical:hover{
+  opacity: 0.6;
+  box-shadow: 0px 0px 0px 0px grey;
+}
+*/
+
+.scrollbar {
+  overflow: scroll;
+  margin-top: 0%;
+  max-height: 85%;
+}
+.scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+}
+.scrollbar-primary::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color:lightgrey;
+}
+
+.sidenav {
+  height: 100%; 
+  width: 0; 
+  min-width: 0px;
+  overflow: none;
+  transition: 0.5s; 
+}
+
+/*JULLIA added*/
+
+.vertical-menu {
+  width: 200px; /* Set a width if you like */
+}
+
+.vertical-menu a {
+  background-color: #eee; /* Grey background color */
+  color: black; /* Black text color */
+  display: block; /* Make the links appear below each other */
+  padding: 12px; /* Add some padding */
+  text-decoration: none; /* Remove underline from links */
+}
+
+.vertical-menu a:hover {
+  background-color: #ccc; /* Dark grey background on mouse-over */
+}
+
+.vertical-menu a.active {
+  background-color: #4CAF50; /* Add a green color to the "active/current" link */
+  color: white;
+}
+
+
+.wrapper {
+  display: inline-block;
+  grid-template-columns: 100% 100% 100%;
+  background-color: #fff;
+  color: #444;
+  max-width: 1000px;
+}
