@@ -110,7 +110,7 @@ function saveDataToLocalStorage(){
   // console.log(' Ima saving data')
   localStorage.setItem('newPackage', JSON.stringify([Package1, Package2]));
   console.log(Package1.Spaceheating)
-  self.forceUpdate()
+
 }
 
 
