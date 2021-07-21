@@ -40,15 +40,15 @@ function createData(ProjectName, ClientName, BuildingType) {
     render() {
       return (
         <div> 
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} >
           <Table className={this.classes.table}>
             <TableHead>
               <TableRow>
                 <TableCell>Project Name</TableCell>
                 <TableCell>Client Name</TableCell>
                 <TableCell>Buiding Type</TableCell>
-                <TableCell>Edit</TableCell>
-                <TableCell>Save</TableCell>
+                <TableCell></TableCell>
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <Divider/>
@@ -62,10 +62,10 @@ function createData(ProjectName, ClientName, BuildingType) {
                 <TableCell> {row.clientName} </TableCell>
                 <TableCell> {row.buildingType} </TableCell>
                 <TableCell>
-                 <Button variant="contained" color="primary" size="small" > Edit </Button>
+                 <Button variant="contained" color="primary" size="medium" > Delete </Button>
                 </TableCell> 
                 <TableCell>
-                  <Button variant="contained" color="primary" size="small" > Save </Button>
+                  <Button variant="contained" color="primary" size="medium" > Edit </Button>
                 </TableCell>
               </TableRow>
                ))}

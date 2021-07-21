@@ -10,15 +10,15 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "100px",
   },
   formBoxS: {
-    marginLeft:'20%',
+    marginLeft:'10%',
     height: "100px",
     width: "1000px",
     bgcolor: "#FFFFFF",
 
   },
   formBoxL: {
-    marginLeft:'20%',
-    height: "500px",
+    marginLeft:'10%',
+    height: "1500px",
     width: "1000px",
     bgcolor: "#FFFFFF",
   },
@@ -212,6 +212,16 @@ const useStyles = makeStyles((theme) => ({
     whiteSpace: 'nowrap',
     zIndex: 0
   },
+  
+
+        hover: {
+          color: "black",
+            "&:hover": {
+                color: "pink !important",
+        },
+      },
+
+
 }));
 
 export default useStyles;

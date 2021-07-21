@@ -24,7 +24,7 @@ con.connect((err) => {
 con.query('SELECT * FROM eeec', (err,rows) => {
   if(err) throw err;
 
-  console.log('Data received from Db:');
+  // console.log('Data received from Db:');
   console.log(rows);
 });
 

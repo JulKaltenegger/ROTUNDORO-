@@ -22,6 +22,18 @@ interface ISelection {
     [x: string]: any
 }
 
+//Added
+
+interface Project {
+    projectName: string,
+    clientName: string,
+    buildingType: string,
+    spaceHeating: number,
+    DHOW: number,
+    Electricity: number,
+    PrimaryEnergy: number
+}
+
 export {
     IContext
 }

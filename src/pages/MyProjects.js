@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect} from "react";
+import React, { useState, useContext, useRef, useEffect, useReducer, } from "react";
 
 import {
   Grid,
@@ -18,7 +18,9 @@ import { palette } from '@material-ui/system';
 import { makeStyles } from "@material-ui/core/styles";
 import "../App.css";
 import MyProjectTable from "../components/Tables/MPTable"
-
+import NavbarMinMP from "../components/NavbarMin/NavbarMinMP";
+import LBDviewer from "../components/GeometryComponent/LBDviewer";
+import Project from "../interfaces/contextInterface"
 
 // MAIN function to create a new project -> const [array of myProjects setmyProjects]
 
@@ -27,7 +29,9 @@ function MyProjects(props) {
     const classes = useStyles()
     const { context, setContext } = useContext(AppContext);
     const [collapse, setCollapse] = useState(true);
-    const [myProjects, setmyProjects] = useState([]) 
+    const [myProjects, setmyProjects] = useState([]);
+    // const [myProjectsTable, updateMyProjectsTable] = useState({myProjectsTableKey})  
+    
     // const [myProjects, setmyProjects] = useState([projectName, clientName, buildingType])
 
 //adding the myProject constant elements and referencing it to the textfield input
@@ -47,22 +51,54 @@ function onSaveClicked() {
   var typedInClientName = clientNameTextFieldRef.current.firstChild.firstChild.value
   var typedInBuildingType = buildingTypeTextFieldRef.current.firstChild.firstChild.value
 
- // create newProject when all three elements are entered.  
+ // //Define  variable for newProject -> create newProject when all three elements are entered.  
  //return: is used to return the value of the function that returns the new projects
-  var newProject  = { projectName : typedInProjectName, clientName: typedInClientName, buildingType : typedInBuildingType }
+  const newProject = {
+    projectName : typedInProjectName,
+    clientName : typedInClientName,
+    buildingType : typedInBuildingType,
+    spaceHeating : 0,
+    DHOW : 0,
+    Electricity : 0,
+    PrimaryEnergy : 0,
+    EnergyLabel : 0,
+    CO2op : 0,
+    constructionYear: 0,
+    refurbishmentYear: 0,
+    refurbishmentLife: 0,
+  }
+
   // rerender only added projects (see ToDoList tutorial)
   setmyProjects(prevProject => {
     return [...prevProject, newProject] 
   })
+  
   //adds a new key for each project -> not for each value added
   myProjectsTableKey++
   console.log('myProjects', myProjects)
 
 }
 
-// useEffect(() => {
-// console.log('helpup')
-// })
+//Save State On Page Refresh
+ useEffect(() => {
+   const myProjectData = localStorage.getItem('myProjects')
+   if (myProjectData) {
+    
+   const TableData = JSON.parse(myProjectData); 
+   if (TableData.length > 0) {
+     setmyProjects (TableData);
+     }
+   }
+   // console.log (JSON.parse(TableData))
+
+ }, [])
+
+
+useEffect(() => {
+  localStorage.setItem('myProjects', JSON.stringify(myProjects));
+}, [myProjects]);
+
+
 
     return (      
       <div className={classes.root}> 
@@ -74,22 +110,13 @@ function onSaveClicked() {
               
                 <Grid xs={9} container className={classes.form} >                    
                     <Grid item spacing className={classes.formBoxS} >
-                     <Box class="grid-container" >    
-                        <Typography class="grid-item grid-item-1" > Project Name</Typography>
-                        <Typography class="grid-item grid-item-2"> Client Name</Typography>
-                        <Typography class="grid-item grid-item-3"> Building Type</Typography>
-                        <Typography class="grid-item grid-item-4"> Edit</Typography>
-                        <Typography class="grid-item grid-item-5"> Save</Typography>
-                        {/* <Button variant="contained" color="primary" size="small" > Edit </Button>
-                        <Button variant="contained" color="primary" size="small" > Save </Button> */}
-                      </Box>                    
+                    <NavbarMinMP/>
                     </Grid>                   
                     <Grid item spacing={2} className={classes.formBoxS}>
-                      <Box class="grid-container" >
-                        <TextField ref={projectNameTextFieldRef} type="text"></TextField>
-                        <TextField ref={clientNameTextFieldRef} type="text"></TextField>
-                        <TextField ref={buildingTypeTextFieldRef} type="text"></TextField>
-                        <Button variant="contained" color="primary" size="small" > Edit </Button>
+                      <Box class="grid-container">
+                        <TextField ref={projectNameTextFieldRef} type="text" placeholder="Project"></TextField>
+                        <TextField ref={clientNameTextFieldRef} type="text" placeholder="Client Name"></TextField>
+                        <TextField ref={buildingTypeTextFieldRef} type="text" placeholder="Building Type"></TextField>
                         <Button onClick={onSaveClicked}  variant="contained" color="primary" size="small" > Add </Button>
                       </Box>
                     </Grid>

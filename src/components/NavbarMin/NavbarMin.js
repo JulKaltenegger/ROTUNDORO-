@@ -1,31 +1,38 @@
-import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { NavLink, Link } from "react-router-dom";
+import "../../App.css";
 
-const NavbarMin = () => {
+import { 
+    Button,
+    IconButton, 
+} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
+import HomeIcon from "@material-ui/icons/Home";
+
+
+
+const NavbarMin = ({links}) => {
+    
+    const [color, setColor] = useState("red")
+    function customMe() {
+        setColor('primary')
+    }  
+
     return (
-    <>
-    <NavMin>
-        <NavLink to="/">
-            <h1>Logo</h1>
-        </NavLink>
-        <Bars />
-        <NavMinMenu>
-            <NavLink to="/dashboard" activeStyle>
-                Dashboard
-            </NavLink>
-            <NavLink to="/dashboard" activeStyle>
-                Performance
-            </NavLink>
-            <NavLink to="/dashboard" activeStyle>
-                Pie Chart
-            </NavLink>
-            <NavLink to="/dashboard" activeStyle>
-                3D View
-            </NavLink>
-        </NavMinMenu>
+    <div className="NavbarMin">
+        <div className="leftSide"></div>
+        <div className="rightSide">
+            <IconButton component={Link} to={links[0]} >
+                <HomeIcon color={color} onClick={()=>customMe()}/>            
+            </IconButton>
+            <IconButton component={Link} to={links[1]} >
+                <MenuIcon color={color} onClick={()=>customMe()}/>
+            </IconButton>
+            <Button disabled={true} href={links[2]}>3D</Button>
+            <Button disabled={true} href={links[3]}>Pie</Button>
+        </div>
 
-    </NavMin>
-    </>
+    </div>
     );
 };
 

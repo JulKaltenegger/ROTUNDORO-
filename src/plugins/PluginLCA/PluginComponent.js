@@ -15,7 +15,7 @@ export default function MyPlugin() {
 
   const state = context.states[context.plugin]
 
-  return (
+   return (
     <div className={classes.root}>
       {context.currentProject ? (
         <div>
@@ -31,11 +31,12 @@ export default function MyPlugin() {
             <div className={classes.drawerHeader}></div>
             
             <div>
-            <p><Button color="inherit" component={ Link } to="/myprojects"> My Projects </Button></p>
-            <p><Button color="inherit" component={ Link } to="/refurbishments"> Refurbishments </Button></p>
-            <p><Button color="inherit" component={ Link } to="/materials"> Materials </Button></p>
-            <p><Button color="inherit" component={ Link } to="/lifecycleassessment"> Life Cycle Assessment </Button></p>
-            <p><Button color="inherit" component={ Link } to="/costs"> Costs </Button></p>
+            <p><Button color="inherit" className={classes.hover} component={ Link } to="/myprojects"> My Projects </Button></p>
+            <p><Button color="inherit" className={classes.hover} component={ Link } to="/refurbishments"> Refurbishments </Button></p>
+            <p><Button color="inherit" className={classes.hover} component={ Link } to="/materials"> Materials </Button></p>
+            <p><Button color="inherit" className={classes.hover} component={ Link } to="/lifecycleassessment"> Life Cycle Assessment </Button></p>
+            <p><Button color="inherit" className={classes.hover} component={ Link } to="/costs"> Costs </Button></p>
+            <p><Button color="inherit" className={classes.hover} component={ Link } to="/marketpotential"> Market Potential </Button></p>
             {/* <Typography>
                 Current selection:
                 {(context.selection.length > 0) ? (
