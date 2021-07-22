@@ -25,6 +25,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import Injection from "../image/Injection.PNG";
 import InsideLayer from "../image/InsideLayer.PNG";
+import BM from "../image/BM.PNG";
 
 function MarketPotentialPerformance() {
     const classes = useStyles()
@@ -228,11 +229,16 @@ useEffect(() => {
                               <ControlledOpenSelect options={Installation} className="column"> </ControlledOpenSelect>
                             </Box>
                             <Box Class="blocktitleRP">
-                              <div>
-                                  <img src={Injection} width="100px" height="100px" alt="Injection"/>
+                              <div className="column"></div>
+                              <div className="column"></div>
+                              <div className="column">
+                                  <img src={BM}  alt="BM"/>
                               </div>
-                              <div> 
-                                  <img src={InsideLayer} width="100px" height="100px" alt="InsideLayer"/>
+                              <div className="column">
+                                  <img src={Injection} alt="Injection"/>
+                              </div>
+                              <div className="column">  
+                                  <img src={InsideLayer} alt="InsideLayer"/>
                               </div> 
 
                             </Box>

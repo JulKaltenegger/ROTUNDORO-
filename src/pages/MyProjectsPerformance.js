@@ -148,7 +148,7 @@ useEffect(() => {
 
  
  
-  //After initializing the value, we can useEffect to store value on local stoareg
+  //After initializing the value, we can useEffect to store value on local stoarg
   useEffect(() => {
     localStorage.setItem('PrimaryEnergy', JSON.stringify(PrimaryEnergy))
   }, [PrimaryEnergy]);
