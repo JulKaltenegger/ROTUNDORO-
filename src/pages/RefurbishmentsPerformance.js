@@ -27,8 +27,8 @@ function RefurbishmentsPerformance() {
 
 //var for package 1, and package 2
 
-    const [Package1, setPackage1] = useState({RCValueWall:0, RCValueRoof:0, Spaceheating:0, DHOW:0, Electricity:0, PrimaryEnergy:0})
-    const [Package2, setPackage2] = useState({RCValueWall:0, RCValueRoof:0, Spaceheating:0, DHOW:0, Electricity:0, PrimaryEnergy:0})
+    const [Package1, setPackage1] = useState({RCValueWall:0, RCValueRoof:0, Spaceheating:0, DHOW:0, Electricity:0, PrimaryEnergy:0, costSaving:0, gasSaving:0,})
+    const [Package2, setPackage2] = useState({RCValueWall:0, RCValueRoof:0, Spaceheating:0, DHOW:0, Electricity:0, PrimaryEnergy:0, costSaving:0, gasSaving:0,})
     const [newPackages, setnewPackages] = useState([Package1, Package2])
 
 //access current selected Project (myProject)
@@ -94,10 +94,11 @@ function selectPackage1wall(value) {
   newPackage.PrimaryEnergy = calculatePrimaryEnergy (newPackage.Spaceheating, newPackage.DHOW, newPackage.Electricity)
   console.log('primray energy', newPackage.PrimaryEnergy)
  
-  newPackage.GasSaving = calculateGasSaving (newPackage.Spaceheating)
+  newPackage.gasSaving = calculateGasSaving (newPackage.Spaceheating)
   console.log('GasSaving', newPackage.GasSaving )
+  newPackage.costSaving = calculateCostSaving (newPackage.costSaving)
 
-  setPackage1(newPackage)
+  setPackage1(newPackage => newPackage)
   saveDataToLocalStorage()
 }
 
@@ -114,10 +115,11 @@ function selectPackage1roof(value ) {
   newPackage.PrimaryEnergy = calculatePrimaryEnergy (newPackage.Spaceheating, newPackage.DHOW, newPackage.Electricity)
   console.log('primray energy', newPackage.PrimaryEnergy)
 
-  newPackage.GasSaving = calculateGasSaving (newPackage.Spaceheating)
+  newPackage.gasSaving = calculateGasSaving (newPackage.Spaceheating)
   console.log('GasSaving', newPackage.GasSaving )
+  newPackage.costSaving = calculateCostSaving (newPackage.costSaving)
 
-  setPackage1(newPackage)
+  setPackage1(newPackage => newPackage)
   saveDataToLocalStorage()
 
 }
@@ -126,7 +128,7 @@ function selectPackage2wall(value) {
   const newPackage = Package2
   newPackage.RCValueWall = value
   newPackage.Spaceheating = selectSpaceheating(newPackage.RCValueWall,newPackage.RCValueRoof)
-  console.log (newPackage.Spaceheating)
+  console.log ('Spaceheating P2',newPackage.Spaceheating)
  
   newPackage.DHOW = currentSelectedProject.DHOW
   newPackage.Electricity = currentSelectedProject.Electricity
@@ -135,7 +137,8 @@ function selectPackage2wall(value) {
   console.log('primray energy', newPackage.PrimaryEnergy)
 
 
-  newPackage.GasSaving = calculateGasSaving (newPackage.Spaceheating)
+  newPackage.gasSaving = calculateGasSaving (newPackage.Spaceheating)
+  newPackage.costSaving = calculateCostSaving (newPackage.costSaving)
 
   setPackage2(newPackage)
   saveDataToLocalStorage()
@@ -146,7 +149,7 @@ function selectPackage2roof(value) {
   const newPackage = Package2
   newPackage.RCValueRoof = value
   newPackage.Spaceheating = selectSpaceheating(newPackage.RCValueWall,newPackage.RCValueRoof)
-  console.log (newPackage.Spaceheating)
+  console.log ('Spaceheating P2',newPackage.Spaceheating)
  
   newPackage.DHOW = currentSelectedProject.DHOW
   newPackage.Electricity = currentSelectedProject.Electricity
@@ -154,19 +157,55 @@ function selectPackage2roof(value) {
   newPackage.PrimaryEnergy = calculatePrimaryEnergy (newPackage.Spaceheating, newPackage.DHOW, newPackage.Electricity)
   console.log('primray energy', newPackage.PrimaryEnergy)
 
-  newPackage.GasSaving = calculateGasSaving (newPackage.Spaceheating)
+  newPackage.gasSaving = calculateGasSaving (newPackage.Spaceheating)
+  newPackage.costSaving = calculateCostSaving (newPackage.costSaving)
 
   setPackage2(newPackage)
   saveDataToLocalStorage()
 
 }
 
-function saveDataToLocalStorage(){
-  // console.log('Package1', Package1)
-  // console.log('Package2', Package2)
-  // console.log(' Ima saving data')
-  localStorage.setItem('newPackage', JSON.stringify([Package1, Package2]));
+
+useEffect(()=> {
+  const storedPackage = JSON.parse(localStorage.getItem('newPackage'));
+  setPackage1 (storedPackage[0])
+  setPackage2 (storedPackage[1])
 }
+)
+
+function saveDataToLocalStorage(){
+  localStorage.setItem('newPackage', JSON.stringify([Package1, Package2]));
+  
+}
+
+
+//TRY OUT WITH USE EFFECT (Instead i use the function saveDataToLocalStorage)
+ //save package information in array and show results only when RC was selected
+
+// useEffect(() => {
+//   const newPackages = [Package1, Package2]
+//   const storedPackage = JSON.parse(localStorage.getItem('newPackage'))
+//   setnewPackages (storedPackage)
+//   const storedPackage1 = storedPackage[0]
+
+//   setSpaceheating (storedPackage1.Spaceheating)
+//   // setRCValueRoof (storedPackage.RCValueRoof)
+//   // setPackage1 (storedPackage.RCValueWall)
+//   // setPackage1(storedPackage.newPackage)
+//   // setPackage2(storedPackage.newPackage)
+
+// }, []);
+
+
+// useEffect(() => {
+//   localStorage.setItem('newPackage', JSON.stringify([Package1, Package2]));
+  
+//   console.log ('Package1', Package1)
+//   console.log ('Package2', Package2)
+
+// });
+
+
 
 
 
@@ -197,56 +236,32 @@ function saveDataToLocalStorage(){
  }
 
 
-//TRY OUT WITH USE EFFECT (Instead i use the function saveDataToLocalStorage)
- //save package information in array and show results only when RC was selected
-
- // useEffect(() => {
-//   const newPackages = [Package1, Package2]
-//   const storedPackage = JSON.parse(localStorage.getItem('newPackage'))
-//   setnewPackages (storedPackage)
-//   const storedPackage1 = storedPackage[0]
-
-//   setSpaceheating (storedPackage1.Spaceheating)
-//   // setRCValueRoof (storedPackage.RCValueRoof)
-//   // setPackage1 (storedPackage.RCValueWall)
-//   // setPackage1(storedPackage.newPackage)
-//   // setPackage2(storedPackage.newPackage)
-
-// }, []);
-
-
-// useEffect(() => {
-//   localStorage.setItem('newPackage', JSON.stringify([Package1, Package2]));
-  
-//   console.log ('Package1', Package1)
-//   console.log ('Package2', Package2)
-
-// });
-
-
 //Perform further calculations Primary Energy and Gas reduction
 function calculatePrimaryEnergy(Spaceheating, DHOW, Electricity) {
-  const newPackage = [Package1, Package2] 
   const PrimaryEnergyValue = Math.round((((((Spaceheating + DHOW) * ConversionFactorGas) + ((Electricity * ConversionFactorEle) / TransfereeEle))*0.277777) + Number.EPSILON) * 100) / 100
-  // localStorage.setItem('PrimaryEnergy', PrimaryEnergy)
-  
-
-  setPrimaryEnegery (PrimaryEnergyValue)
-
-  newPackage.PrimaryEnergy = PrimaryEnergyValue 
-  console.log('PrimaryEnergy', PrimaryEnergy)
+  return PrimaryEnergyValue
 }
 
 
-function calculateGasSaving (Spaceheating){
-  const newPackage = [Package1, Package2] 
-  const GasSavingValue = (currentSelectedProject.Spaceheating - newPackage.Spaceheating)
+//Calculate Gas Saving
+function calculateGasSaving (){
+  const newPackageSpaceheating = [Package1.Spaceheating, Package2.Spaceheating] 
+  const currentSpaceheating = currentSelectedProject.Spaceheating
+  const gasSavingValue = Math.round(currentSpaceheating - newPackageSpaceheating)
+  console.log('spaceheating current', newPackageSpaceheating[0])
 
-  setGasSaving (GasSavingValue)
-  newPackage.GasSaving = GasSavingValue
-
-  console.log('GasSaving', GasSaving)
+  return gasSavingValue
 }
+
+const [costSaving, setcostSaving] = useState()
+const [gasPrice, setgasPrice] = useState(0.814)
+
+//Calculate Cost Saving
+function calculateCostSaving (Spaceheating) {
+  const costSavingValue = (Spaceheating*gasPrice)
+  return costSavingValue
+}
+
 
     return (
         <div className={classes.root}> 
@@ -372,8 +387,8 @@ function calculateGasSaving (Spaceheating){
                           (kWh/a)
                         </Typography>
                         <Typography className="columncomputed">{currentSelectedProject.PrimaryEnergy}</Typography>
-                        <Typography className="column">{PrimaryEnergy}</Typography>
-                        <Typography className="column">{PrimaryEnergy}</Typography>
+                        <Typography className="column">{Package1.PrimaryEnergy}</Typography>
+                        <Typography className="column">{Package2.PrimaryEnergy}</Typography>
                     </Box>
                     <Box class="blocktitleRP">
                         <Typography className="column" > 
@@ -425,8 +440,8 @@ function calculateGasSaving (Spaceheating){
                          (m³/a)
                         </Typography>
                         <Typography className="columncomputed">0.00</Typography>
-                        <Typography placeholder="235.44" className="column">{GasSaving}</Typography>
-                        <Typography placeholder="358.28" className="column">{Package2.GasSaving}</Typography>
+                        <Typography placeholder="235.44" className="column">{Package1.gasSaving}</Typography>
+                        <Typography placeholder="358.28" className="column">{Package2.gasSaving}</Typography>
                     </Box>
                     <Box class="blocktitleRP">
                         <Typography className="column" > 
@@ -436,8 +451,8 @@ function calculateGasSaving (Spaceheating){
                           (€/a)
                         </Typography>
                         <Typography className="columncomputed">0.00</Typography>
-                        <input placeholder="200.00" className="column"></input>
-                        <input placeholder="300.00" className="column"></input>
+                        <Typography className="column">{Package1.costSaving}</Typography>
+                        <Typography className="column">{Package2.costSaving}</Typography>
                     </Box>
                   </Grid>                
                 <Grid>  
@@ -450,6 +465,7 @@ function calculateGasSaving (Spaceheating){
         )}
     </div>
     )
+  
 }
 
 export default RefurbishmentsPerformance
