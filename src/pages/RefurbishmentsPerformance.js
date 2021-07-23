@@ -80,6 +80,20 @@ function selectData(value){
   
 }
 
+useEffect(()=> {
+  const storedPackage = JSON.parse(localStorage.getItem('newPackage'));
+  setPackage1 (storedPackage[0])
+  setPackage2 (storedPackage[1])
+}
+)
+
+function saveDataToLocalStorage(){
+  localStorage.setItem('newPackage', JSON.stringify([Package1, Package2]));
+  
+}
+
+
+
 //Functions to P1 set wall, P1 set roof => Package 1
 //Functions to P2 set wall, P2 set roof => Package 2
 function selectPackage1wall(value) {
@@ -166,17 +180,6 @@ function selectPackage2roof(value) {
 }
 
 
-useEffect(()=> {
-  const storedPackage = JSON.parse(localStorage.getItem('newPackage'));
-  setPackage1 (storedPackage[0])
-  setPackage2 (storedPackage[1])
-}
-)
-
-function saveDataToLocalStorage(){
-  localStorage.setItem('newPackage', JSON.stringify([Package1, Package2]));
-  
-}
 
 
 //TRY OUT WITH USE EFFECT (Instead i use the function saveDataToLocalStorage)
