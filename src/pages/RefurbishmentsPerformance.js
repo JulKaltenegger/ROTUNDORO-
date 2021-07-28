@@ -18,6 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 // import {dbconnect, runquery, dbclosed} from "../plugins/PluginLCA/Components/mysql.refpack"
 
 function RefurbishmentsPerformance() {
+  const NEWPACKAGES_KEY = "newPackages"
     const classes = useStyles()
     const {context, setContext} = useContext(AppContext)
   
@@ -26,24 +27,13 @@ function RefurbishmentsPerformance() {
     const [RCValueRoof, setRCValueRoof] = useState([{id:uuidv4(), name:"RC 2.5", value:2.5 }, {id:uuidv4(), name:"RC 6.5", value:6.5 }])
 
 //var for package 1, and package 2
-
-    const [Package1, setPackage1] = useState({RCValueWall:0, RCValueRoof:0, Spaceheating:0, DHOW:0, Electricity:0, PrimaryEnergy:0, costSaving:0, gasSaving:0,})
-    const [Package2, setPackage2] = useState({RCValueWall:0, RCValueRoof:0, Spaceheating:0, DHOW:0, Electricity:0, PrimaryEnergy:0, costSaving:0, gasSaving:0,})
-    const [newPackages, setnewPackages] = useState([Package1, Package2])
+const [Package1, setPackage1] = useState({RCValueWall:0, RCValueRoof:0, Spaceheating:0, DHOW:0, Electricity:0, PrimaryEnergy:0, EnergyLabel:0, CO2op:0, costSaving:0, gasSaving:0, materialname:0})
+const [Package2, setPackage2] = useState({RCValueWall:0, RCValueRoof:0, Spaceheating:0, DHOW:0, Electricity:0, PrimaryEnergy:0, EnergyLabel:0, CO2op:0, costSaving:0, gasSaving:0, materialname:0})
+    // const [newPackages, setnewPackages] = useState([Package1, Package2]) for future purpose, it would be ideal to create an empty arry of package objects, adjustable by the users input. 
 
 //access current selected Project (myProject)
     const [myProjects, setmyProjects] = useState([]);
     const [currentSelectedProject, setcurrentSelectedProject] = useState({}) 
-
-//Spaceheatin, DHOW, Electricity
-    const [Spaceheating, setSpaceheating] = useState(0)
-    const [DHOW, setDHOW] = useState(0)
-    const [Electricity, setElectricity] = useState(0)
-
-//Perform Primary Energy wit user input from above
-    const [PrimaryEnergy, setPrimaryEnegery] = useState(0) 
-    const [EnergyLabel, setEnergyLabel] = useState("")
-    const [CO2op, setCO2op] = useState(0)
 
     const [ConversionFactorGas, setConversionFactorGas] = useState(35.17)
     const [ConversionFactorEle, setConversionFactorEle] = useState(3.6)
@@ -51,7 +41,8 @@ function RefurbishmentsPerformance() {
 
 //Gas Saving
     const [GasSaving, setGasSaving] = useState(0)
-    
+
+//initialize, get values from local storage and update UI
 useEffect(() => {
 //  const myProjects = localStorage.getItem('myProjects'[0])
     const storedProjects = JSON.parse(localStorage.getItem('myProjects'))
@@ -60,161 +51,106 @@ useEffect(() => {
   
     setcurrentSelectedProject (storedProject)
 
+    const storedPackage = JSON.parse(localStorage.getItem(NEWPACKAGES_KEY))
+    console.log(storedPackage)
+    if (storedPackage && storedPackage.length > 1 ) {
+      console.log(storedPackage[0])
+      updatePackage1 (storedPackage[0])
+      updatePackage2 (storedPackage[1])
+    }
+
     },
     
     []);
 
-
-//use effect to query db table from mysql -> 10.07.2021
-    // useEffect(() => {
-    //   dbconnect().then(function(con){
-    //     runquery(con,"SELECT DISTINCT rcwall FROM refpackage.refpackge").then(function(rows){
-    //       console.log (rows)
-    //     })
-    //   })
-    // }, [])
-
-    //
-function selectData(value){
-  console.log(value)
-  
+//update of complete package, by calling ...Package1, and overwrite, all values, as listed next to it.
+function updatePackage1(updatedPackage){
+  setPackage1({...Package1, RCValueWall:updatedPackage.RCValueWall, RCValueRoof:updatedPackage.RCValueRoof, Spaceheating: updatedPackage.Spaceheating, DHOW:updatedPackage.DHOW, Electricity:updatedPackage.Electricity, PrimaryEnergy:updatedPackage.PrimaryEnergy, EnergyLabel:updatedPackage.EnergyLabel, CO2op:updatedPackage.CO2op, costSaving:updatedPackage.costSaving, gasSaving:updatedPackage.gasSaving, materialname:updatedPackage.materialname})   
+}
+function updatePackage2(updatedPackage){
+  setPackage2({...Package2, RCValueWall: updatedPackage.RCValueWall, RCValueRoof:updatedPackage.RCValueRoof, Spaceheating: updatedPackage.Spaceheating, DHOW:updatedPackage.DHOW, Electricity:updatedPackage.Electricity, PrimaryEnergy:updatedPackage.PrimaryEnergy, EnergyLabel:updatedPackage.EnergyLabel, CO2op:updatedPackage.CO2op, costSaving:updatedPackage.costSaving, gasSaving:updatedPackage.gasSaving, materialname:updatedPackage.materialname})
 }
 
-useEffect(()=> {
-  const storedPackage = JSON.parse(localStorage.getItem('newPackage'));
-  setPackage1 (storedPackage[0])
-  setPackage2 (storedPackage[1])
-}
-)
-
+// save packages to local storage, which is calledn in earlier functions
 function saveDataToLocalStorage(){
-  localStorage.setItem('newPackage', JSON.stringify([Package1, Package2]));
-  
+  localStorage.setItem(NEWPACKAGES_KEY, JSON.stringify([Package1, Package2]));
 }
-
 
 
 //Functions to P1 set wall, P1 set roof => Package 1
 //Functions to P2 set wall, P2 set roof => Package 2
+
 function selectPackage1wall(value) {
-  const newPackage = Package1
+  let newPackage = Package1
   newPackage.RCValueWall = value
   newPackage.Spaceheating = selectSpaceheating(newPackage.RCValueWall,newPackage.RCValueRoof)
-  console.log (newPackage.Spaceheating)
 
   newPackage.DHOW = currentSelectedProject.DHOW
   newPackage.Electricity = currentSelectedProject.Electricity
 
-  newPackage.PrimaryEnergy = calculatePrimaryEnergy (newPackage.Spaceheating, newPackage.DHOW, newPackage.Electricity)
-  console.log('primray energy', newPackage.PrimaryEnergy)
- 
-  newPackage.gasSaving = calculateGasSaving (newPackage.Spaceheating)
-  console.log('GasSaving', newPackage.GasSaving )
-  newPackage.costSaving = calculateCostSaving (newPackage.costSaving)
+  newPackage = calculatePrimaryEnergy (newPackage.Spaceheating, newPackage.DHOW, newPackage.Electricity, newPackage)
 
-  setPackage1(newPackage => newPackage)
+  newPackage.gasSaving = calculateGasSaving (newPackage.Spaceheating)
+  newPackage.costSaving = calculateCostSaving (newPackage.gasSaving)
+
+  updatePackage1(newPackage)
   saveDataToLocalStorage()
 }
 
 function selectPackage1roof(value ) {
-  const newPackage = Package1
+  let newPackage = Package1
   newPackage.RCValueRoof = value
   newPackage.Spaceheating = selectSpaceheating(newPackage.RCValueWall,newPackage.RCValueRoof)
-  console.log ('roof ' +newPackage.Spaceheating)
-  console.log('value used '+ value)
 
   newPackage.DHOW = currentSelectedProject.DHOW
   newPackage.Electricity = currentSelectedProject.Electricity
 
-  newPackage.PrimaryEnergy = calculatePrimaryEnergy (newPackage.Spaceheating, newPackage.DHOW, newPackage.Electricity)
-  console.log('primray energy', newPackage.PrimaryEnergy)
+  newPackage = calculatePrimaryEnergy (newPackage.Spaceheating, newPackage.DHOW, newPackage.Electricity, newPackage)
 
   newPackage.gasSaving = calculateGasSaving (newPackage.Spaceheating)
-  console.log('GasSaving', newPackage.GasSaving )
-  newPackage.costSaving = calculateCostSaving (newPackage.costSaving)
+  newPackage.costSaving = calculateCostSaving (newPackage.gasSaving)
 
-  setPackage1(newPackage => newPackage)
+  updatePackage1(newPackage)
   saveDataToLocalStorage()
-
 }
 
 function selectPackage2wall(value) {
-  const newPackage = Package2
+  let newPackage = Package2
   newPackage.RCValueWall = value
   newPackage.Spaceheating = selectSpaceheating(newPackage.RCValueWall,newPackage.RCValueRoof)
-  console.log ('Spaceheating P2',newPackage.Spaceheating)
  
   newPackage.DHOW = currentSelectedProject.DHOW
   newPackage.Electricity = currentSelectedProject.Electricity
 
-  newPackage.PrimaryEnergy = calculatePrimaryEnergy (newPackage.Spaceheating, newPackage.DHOW, newPackage.Electricity)
-  console.log('primray energy', newPackage.PrimaryEnergy)
-
+  newPackage = calculatePrimaryEnergy (newPackage.Spaceheating, newPackage.DHOW, newPackage.Electricity, newPackage)
 
   newPackage.gasSaving = calculateGasSaving (newPackage.Spaceheating)
-  newPackage.costSaving = calculateCostSaving (newPackage.costSaving)
+  newPackage.costSaving = calculateCostSaving (newPackage.gasSaving)
 
-  setPackage2(newPackage)
+  updatePackage2(newPackage)
   saveDataToLocalStorage()
-
 }
 
 function selectPackage2roof(value) {
-  const newPackage = Package2
+  let newPackage = Package2
   newPackage.RCValueRoof = value
   newPackage.Spaceheating = selectSpaceheating(newPackage.RCValueWall,newPackage.RCValueRoof)
-  console.log ('Spaceheating P2',newPackage.Spaceheating)
- 
+
   newPackage.DHOW = currentSelectedProject.DHOW
   newPackage.Electricity = currentSelectedProject.Electricity
 
-  newPackage.PrimaryEnergy = calculatePrimaryEnergy (newPackage.Spaceheating, newPackage.DHOW, newPackage.Electricity)
-  console.log('primray energy', newPackage.PrimaryEnergy)
+  newPackage = calculatePrimaryEnergy (newPackage.Spaceheating, newPackage.DHOW, newPackage.Electricity, newPackage)
 
   newPackage.gasSaving = calculateGasSaving (newPackage.Spaceheating)
-  newPackage.costSaving = calculateCostSaving (newPackage.costSaving)
+  newPackage.costSaving = calculateCostSaving (newPackage.gasSaving)
 
-  setPackage2(newPackage)
+  updatePackage2(newPackage)
   saveDataToLocalStorage()
-
 }
-
-
-
-
-//TRY OUT WITH USE EFFECT (Instead i use the function saveDataToLocalStorage)
- //save package information in array and show results only when RC was selected
-
-// useEffect(() => {
-//   const newPackages = [Package1, Package2]
-//   const storedPackage = JSON.parse(localStorage.getItem('newPackage'))
-//   setnewPackages (storedPackage)
-//   const storedPackage1 = storedPackage[0]
-
-//   setSpaceheating (storedPackage1.Spaceheating)
-//   // setRCValueRoof (storedPackage.RCValueRoof)
-//   // setPackage1 (storedPackage.RCValueWall)
-//   // setPackage1(storedPackage.newPackage)
-//   // setPackage2(storedPackage.newPackage)
-
-// }, []);
-
-
-// useEffect(() => {
-//   localStorage.setItem('newPackage', JSON.stringify([Package1, Package2]));
-  
-//   console.log ('Package1', Package1)
-//   console.log ('Package2', Package2)
-
-// });
-
-
-
 
 
 //function spaceheating look up space heating reduciton in m³ when insolation 
 //with RC value for Wall and Roof
-
  function selectSpaceheating(wall, roof){
    console.log (wall)
    console.log (roof)
@@ -240,28 +176,63 @@ function selectPackage2roof(value) {
 
 
 //Perform further calculations Primary Energy and Gas reduction
-function calculatePrimaryEnergy(Spaceheating, DHOW, Electricity) {
+function calculatePrimaryEnergy(Spaceheating, DHOW, Electricity, Package) {
   const PrimaryEnergyValue = Math.round((((((Spaceheating + DHOW) * ConversionFactorGas) + ((Electricity * ConversionFactorEle) / TransfereeEle))*0.277777) + Number.EPSILON) * 100) / 100
-  return PrimaryEnergyValue
+
+  Package.PrimaryEnergy = PrimaryEnergyValue
+  Package.CO2op = calculateCO2op (PrimaryEnergyValue)
+  Package.EnergyLabel = calculateEnergyLabel (PrimaryEnergyValue)
+
+  // return PrimaryEnergyValue
+  return Package
 }
 
+// Energy Lable calc. define value, then translate to alph.num. value
+const [buildingArea, setbuildingArea] = useState(100)
+  
+function calculateEnergyLabel(PrimaryEnergyValue) {
+  const EnergyLabelValue = PrimaryEnergyValue/buildingArea
+    switch (true) {
+      case (EnergyLabelValue <= 138.84):
+        return "A"
+      case (EnergyLabelValue <= 162.08):
+        return "B"
+      case (EnergyLabelValue <= 174.27):
+        return "C"
+      case (EnergyLabelValue <= 195.60):
+        return "D"
+      case (EnergyLabelValue <= 211.55):
+        return "E"
+      case (EnergyLabelValue <= 223.83):
+        return "F"
+      case (EnergyLabelValue <= 232.10):
+        return "G"  
+      default:
+        return "need to improve"
+    }
+}
+
+//CO2 operational 
+  const [CO2conv, setCO2conv] = useState(0.2019)
+
+  function calculateCO2op(PrimaryEnergyValue) {
+  const CO2opValue = Math.round((PrimaryEnergyValue * CO2conv + Number.EPSILON) * 100) / 100 
+  return CO2opValue
+ }
 
 //Calculate Gas Saving
-function calculateGasSaving (){
-  const newPackageSpaceheating = [Package1.Spaceheating, Package2.Spaceheating] 
-  const currentSpaceheating = currentSelectedProject.Spaceheating
-  const gasSavingValue = Math.round(currentSpaceheating - newPackageSpaceheating)
-  console.log('spaceheating current', newPackageSpaceheating[0])
-
+function calculateGasSaving (Spaceheating){
+  const currentSpaceheating = currentSelectedProject.spaceHeating
+  const gasSavingValue = Math.round((currentSpaceheating - Spaceheating))
+  console.log(gasSavingValue)
   return gasSavingValue
 }
 
-const [costSaving, setcostSaving] = useState()
+//Calculate Cost Saving
 const [gasPrice, setgasPrice] = useState(0.814)
 
-//Calculate Cost Saving
-function calculateCostSaving (Spaceheating) {
-  const costSavingValue = (Spaceheating*gasPrice)
+function calculateCostSaving (gasSavingValue) {
+  const costSavingValue = Math.round(gasSavingValue*gasPrice)
   return costSavingValue
 }
 
@@ -306,10 +277,10 @@ function calculateCostSaving (Spaceheating) {
                         <Typography> 0.68</Typography>
                         </div> 
                         <div className="column">
-                        <ControlledOpenSelect options={RCValueWall} selectvaluechange={selectPackage1wall}></ControlledOpenSelect>
+                        <ControlledOpenSelect options={RCValueWall} selectvaluechange={selectPackage1wall} defaultValue={Package1.RCValueWall}></ControlledOpenSelect>
                         </div>
                         <div className="column">
-                        <ControlledOpenSelect options={RCValueWall} selectvaluechange={selectPackage2wall}></ControlledOpenSelect>
+                        <ControlledOpenSelect options={RCValueWall} selectvaluechange={selectPackage2wall} defaultValue={Package2.RCValueWall}></ControlledOpenSelect>
                         </div>                  
                     </Box>
                     <Box class="blocktitleRP">
@@ -323,10 +294,10 @@ function calculateCostSaving (Spaceheating) {
                         <Typography> 1.12</Typography>
                         </div> 
                         <div className="column">
-                        <ControlledOpenSelect options={RCValueRoof} selectvaluechange={selectPackage1roof}></ControlledOpenSelect>
+                        <ControlledOpenSelect options={RCValueRoof} selectvaluechange={selectPackage1roof} defaultValue={Package1.RCValueRoof}></ControlledOpenSelect>
                         </div>
                         <div className="column">
-                        <ControlledOpenSelect options={RCValueRoof} selectvaluechange={selectPackage2roof}></ControlledOpenSelect>
+                        <ControlledOpenSelect options={RCValueRoof} selectvaluechange={selectPackage2roof} defaultValue={Package2.RCValueRoof}></ControlledOpenSelect>
                         </div>                  
                     </Box>
                     <p></p>
@@ -401,8 +372,8 @@ function calculateCostSaving (Spaceheating) {
                          (A-G)
                         </Typography>
                         <Typography className="columncomputed">{currentSelectedProject.EnergyLabel}</Typography>
-                        <Typography placeholder="C" className="column">ei</Typography>
-                        <Typography placeholder="B" className="column">ei</Typography>
+                        <Typography placeholder="C" className="column">{Package1.EnergyLabel}</Typography>
+                        <Typography placeholder="B" className="column">{Package2.EnergyLabel}</Typography>
                     </Box>
                     <Box class="blocktitleRP">
                         <Typography className="column" > 
@@ -412,8 +383,8 @@ function calculateCostSaving (Spaceheating) {
                          (kgCO2/a)
                         </Typography>
                         <Typography className="columncomputed">{currentSelectedProject.CO2op}</Typography>
-                        <Typography placeholder="C" className="column">ei</Typography>
-                        <Typography placeholder="B" className="column">ei</Typography>
+                        <Typography placeholder="C" className="column">{Package1.CO2op}</Typography>
+                        <Typography placeholder="B" className="column">{Package2.CO2op}</Typography>
                     </Box>
                     <p></p>
                     <Divider /> 

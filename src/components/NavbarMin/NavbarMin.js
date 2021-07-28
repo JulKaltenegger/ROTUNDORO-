@@ -14,9 +14,15 @@ import HomeIcon from "@material-ui/icons/Home";
 const NavbarMin = ({links}) => {
     
     const [color, setColor] = useState("red")
-    function customMe() {
+    
+    // function customMe() {
+    //     setColor('primary')
+    // }  
+
+    const customMe = (color)=> {
         setColor('primary')
     }  
+
 
     return (
     <div className="NavbarMin">

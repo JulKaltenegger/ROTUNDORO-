@@ -218,10 +218,10 @@ useEffect(() => {
 
 
   //CO2 operational 
-  const [CO2coef, setCO2coef] = useState(0.2019)
+  const [CO2conv, setCO2conv] = useState(0.2019)
 
   function calculateCO2op(PrimaryEnergyValue) {
-    const CO2opValue = Math.round((PrimaryEnergyValue * CO2coef + Number.EPSILON) * 100) / 100 
+    const CO2opValue = Math.round((PrimaryEnergyValue * CO2conv + Number.EPSILON) * 100) / 100 
     setCO2op (CO2opValue)
   }
 

@@ -22,67 +22,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ControlledOpenSelect({options, selectvaluechange}) {
-
-  // const [options, setoption] = useState([]);
-  // added Julia 07.07.2021
-  // let RC = {
-  //   id: 1,
-  //   name: "RC 1.7",
-  // }
-
-  // const allRC = [
-  //   {
-  //     id: 1,
-  //   name: "RC 1.7"
-  //   },
-  //   {
-  //     id: 2,
-  //   name: "RC 2.5"
-  //   },
-  //   {
-  //     id: 3,
-  //   name: "RC 4.0"
-  //   },
-  //   {
-  //     id: 4,
-  //   name: "RC 6.5"
-  //   },
-  // ]
-//..............
-
+//input variable passed where component is called,
+export default function ControlledOpenSelect({options, selectvaluechange, defaultValue}) {
   const classes = useStyles();
-  const [RC, setRC] = React.useState({value:''});
-  const [open, setOpen] = React.useState(false);
+  const [value, setvalue] = React.useState(defaultValue);
 
+  //handle change, calling the function to notify that there is an update of the value.  
   const handleChange = (event) => {
-    // setRC({value: event.target.value});
     selectvaluechange (event.target.value)
+    setvalue(event.target.value)
     console.log(event.target.value)
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  // initialization of the default value
+  useEffect(() => {
+    setvalue(defaultValue)
+  },[]);
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  
+  // [] puting in the defaultValue updates when the value is changing.
+  useEffect(() => {
+    setvalue(defaultValue)
+  },[defaultValue]);
+
+    
   return (
     <FormGroup row>
-      {/* <Button className={classes.button} onClick={handleOpen}>
-        Open the select
-      </Button> */}
       <FormControl className={classes.formControl}>
         <InputLabel id="demo-controlled-open-select-label">Select</InputLabel>
         <Select
           labelId="demo-controlled-open-select-label"
           id="demo-controlled-open-select"
-          // open={open}
-          // onClose={handleClose}
-          // onOpen={handleOpen}
-          // value={RC.value}
+          value={value}
           onChange={handleChange}
           class="dropdowntext"
         >
@@ -94,13 +64,6 @@ export default function ControlledOpenSelect({options, selectvaluechange}) {
                 return (<MenuItem key={option.id} value={option.value}>{option.name}</MenuItem>)
               })
             }
-          
-  {/* //tried by Julia 07.07.21 */}
-          {/* {allRC.map(RC => {
-            return(
-              <MenuItem key={RC.id} value={RC}>{RC.name} </MenuItem>
-            )
-          })} */}
         </Select>
       </FormControl>
     </FormGroup>
