@@ -91,6 +91,16 @@ useEffect(() => {
     localStorage.setItem('Electricity', JSON.stringify(Electricity))
   }, [Electricity]);
 
+//After initializing the value, we can useEffect to store value on local stoarg
+useEffect(() => {
+    localStorage.setItem('PrimaryEnergy', JSON.stringify(PrimaryEnergy))
+  }, [PrimaryEnergy]);
+    
+    
+  // useEffect(() => {
+  //    localStorage.setItem('CO2op', JSON.stringify(CO2op))
+  // }, [CO2op]);
+    
 
 
 //Get user input (+ means translate to numbers) On change handerle
@@ -148,15 +158,6 @@ useEffect(() => {
 
  
  
-  //After initializing the value, we can useEffect to store value on local stoarg
-  useEffect(() => {
-    localStorage.setItem('PrimaryEnergy', JSON.stringify(PrimaryEnergy))
-  }, [PrimaryEnergy]);
-
-
-  useEffect(() => {
-    localStorage.setItem('CO2op', JSON.stringify(CO2op))
-  }, [CO2op]);
 
   //when Primary energy is calculated, render Energy lable and CO2op (based on primary energy)
   function calculatePrimaryEnergy(SpaceHeating, Dhow, electricity) {
@@ -178,10 +179,8 @@ useEffect(() => {
     const newMyProject = [...myProjects]
     newMyProject [0] = newProject
     setmyProjects (newMyProject)
-
-
-
   }
+
 
   // Energy Lable calc. define value, then translate to alph.num. value
   const [buildingArea, setbuildingArea] = useState(100)
@@ -221,9 +220,15 @@ useEffect(() => {
   const [CO2conv, setCO2conv] = useState(0.2019)
 
   function calculateCO2op(PrimaryEnergyValue) {
-    const CO2opValue = Math.round((PrimaryEnergyValue * CO2conv + Number.EPSILON) * 100) / 100 
+    const CO2opValue = Math.round((PrimaryEnergyValue * CO2conv)) 
     setCO2op (CO2opValue)
   }
+
+  // function calculateCO2op(PrimaryEnergyValue) {
+  //   const CO2opValue = Math.round((PrimaryEnergyValue * CO2conv + Number.EPSILON) * 100) / 100 
+  //   setCO2op (CO2opValue)
+  // }
+
 
 
   //Construction time

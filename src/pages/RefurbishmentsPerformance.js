@@ -44,12 +44,12 @@ const [Package2, setPackage2] = useState({RCValueWall:0, RCValueRoof:0, Spacehea
 
 //initialize, get values from local storage and update UI
 useEffect(() => {
-//  const myProjects = localStorage.getItem('myProjects'[0])
     const storedProjects = JSON.parse(localStorage.getItem('myProjects'))
     setmyProjects (storedProjects)
     const storedProject = storedProjects[0]
   
     setcurrentSelectedProject (storedProject)
+    console.log('current CO2',currentSelectedProject.CO2op)
 
     const storedPackage = JSON.parse(localStorage.getItem(NEWPACKAGES_KEY))
     console.log(storedPackage)
@@ -58,10 +58,7 @@ useEffect(() => {
       updatePackage1 (storedPackage[0])
       updatePackage2 (storedPackage[1])
     }
-
-    },
-    
-    []);
+ }, []);
 
 //update of complete package, by calling ...Package1, and overwrite, all values, as listed next to it.
 function updatePackage1(updatedPackage){
@@ -216,7 +213,7 @@ function calculateEnergyLabel(PrimaryEnergyValue) {
   const [CO2conv, setCO2conv] = useState(0.2019)
 
   function calculateCO2op(PrimaryEnergyValue) {
-  const CO2opValue = Math.round((PrimaryEnergyValue * CO2conv + Number.EPSILON) * 100) / 100 
+  const CO2opValue = Math.round(PrimaryEnergyValue * CO2conv + Number.EPSILON)
   return CO2opValue
  }
 

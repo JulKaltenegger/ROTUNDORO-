@@ -154,17 +154,37 @@ const RockWool = {
 
 
 
+
+
+// //make user seletion function from selection drop down
+// function selectMaterialPackage1(value){
+//   console.log('dsd', value)
+//   const newPackage = Package1
+//   newPackage.materialname = value
+
+//   if (Package1.RCValueWall == 1.7 && Package1.RCValueRoof==2.5)
+//    { console.log ('Package1RC WALL', Package1.RCValueWall)
+//     updatePackage1(newPackage)
+//     updateP1Values(value)
+//     saveDataToLocalStorage()
+//   }
+//   else {
+//     return 0
+//   }
+
+
+
 //make user seletion function from selection drop down
 function selectMaterialPackage1(value){
   console.log('dsd', value)
   const newPackage = Package1
   newPackage.materialname = value
 
-  updatePackage1(newPackage)
-  updateP1Values(value)
-  saveDataToLocalStorage()
+    updatePackage1(newPackage)
+    updateP1Values(value)
+    saveDataToLocalStorage()
+  }
 
-}
 function selectMaterialPackage2(value){
   console.log('dsdsdsd', value)
   const newPackage = Package2
@@ -313,6 +333,15 @@ function calcProb (){
   setProbability1(Math.round((p1Utility/SumExp)*100)) 
   setProbability2(Math.round((p2Utility/SumExp)*100))
 }
+
+
+//set state hasn't finished yet before calcprob is called, thus after initializing all values, and performing the calcprob
+//we must call useEffect.
+useEffect (() => {
+  calcProb()
+
+ }, [norenovation, p1Utility, p2Utility])
+
 
 
      return (
