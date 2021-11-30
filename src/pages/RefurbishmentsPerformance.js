@@ -357,7 +357,8 @@ function calculateCostSaving (gasSavingValue) {
                         <Typography className="column"> 
                           (kWh/a)
                         </Typography>
-                        <Typography className="columncomputed">{currentSelectedProject.PrimaryEnergy}</Typography>
+                        {/* <Typography className="columncomputed">{currentSelectedProject.PrimaryEnergy}</Typography> */}
+                        <Typography className="columncomputed">23504.91</Typography>
                         <Typography className="column">{Package1.PrimaryEnergy}</Typography>
                         <Typography className="column">{Package2.PrimaryEnergy}</Typography>
                     </Box>
@@ -368,7 +369,8 @@ function calculateCostSaving (gasSavingValue) {
                         <Typography className="column"> 
                          (A-G)
                         </Typography>
-                        <Typography className="columncomputed">{currentSelectedProject.EnergyLabel}</Typography>
+                        {/* <Typography className="columncomputed">{currentSelectedProject.EnergyLabel}</Typography> */}
+                        <Typography className="columncomputed">need to improve</Typography> 
                         <Typography placeholder="C" className="column">{Package1.EnergyLabel}</Typography>
                         <Typography placeholder="B" className="column">{Package2.EnergyLabel}</Typography>
                     </Box>
@@ -379,7 +381,8 @@ function calculateCostSaving (gasSavingValue) {
                         <Typography className="column"> 
                          (kgCO2/a)
                         </Typography>
-                        <Typography className="columncomputed">{currentSelectedProject.CO2op}</Typography>
+                        {/* <Typography className="columncomputed">{currentSelectedProject.CO2op}</Typography> */}
+                        <Typography className="columncomputed">4746</Typography>                        
                         <Typography placeholder="C" className="column">{Package1.CO2op}</Typography>
                         <Typography placeholder="B" className="column">{Package2.CO2op}</Typography>
                     </Box>

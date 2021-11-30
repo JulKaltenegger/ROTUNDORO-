@@ -55,7 +55,7 @@ const [Probability1, setProbability1] = useState(0)
 const [Probability2, setProbability2] = useState(0)
 
 
-//Local storage set and get materialInjection 
+//Selection of material scenarios for package 1 and 2 
 const [selectedP1Material, setSelectedP1Material] = useState({
   name : "",
   installation : "",
@@ -64,6 +64,7 @@ const [selectedP1Material, setSelectedP1Material] = useState({
   Noise : 0,
   Comfort : "",
 })
+
 const [selectedP2Material, setSelectedP2Material] = useState({
   name : "",
   installation : "",
@@ -197,7 +198,7 @@ function selectMaterialPackage2(value){
 }
 
 
-//function to update all values, called in useEffect, and in selection frop down functions
+//function to update all values, called in useEffect, and in selection drop down functions
 function updateP1Values (value) {
   const copyP1 = Package1
   if (value == 1) {
@@ -272,19 +273,19 @@ function updateP2Values (value) {
 
 // set coefficents
 //constant value for no renovation => exponent value taken
-const [norenovation, setnorenovation] = useState(0.42323318)
-//installation coef: is using only two levels. Injection=0, SecondLayer=-1.145371
-const [installationcoef, setinstallationcoef] =useState({L0:0, L1:-1.145371})
+const [norenovation, setnorenovation] = useState(0.606625286) 
+//installation coef: is using only two levels. Injection=0, SecondLayer=-1.142734
+const [installationcoef, setinstallationcoef] =useState({L0:0, L1:-1.142734})
 //(IC value-L0)*slope in Euro
-const [investmentCostcoef, setinvestmentCostcoef] =useState({L0:2500, slope: -0.000248969})
+const [investmentCostcoef, setinvestmentCostcoef] =useState({L0:2500, slope: -0.000229626})
 //energy reduciton in Euro
-const [energycoef, setEenergycoef] = useState({L0:300, slope: 0.00267716})
+const [energycoef, setEenergycoef] = useState({L0:300, slope: 0.002647525})
 //CO2 saving in kgCO2
- const [CO2coef, setCO2coef] = useState({L0:400, slope: 0.000823145})
+ const [CO2coef, setCO2coef] = useState({L0:400, slope: 0.00080229})
  //Noise reduction coef
- const [noisecoef, setnoisecoef] = useState({L0:25, slope:0.01291908})
- //comfort coef: is using only two levels. yes:0, no: -0.333178
- const [comfortcoef, setcomfortcoef] = useState ({L0:0, L1: -0.333178})
+ const [noisecoef, setnoisecoef] = useState({L0:25, slope: 0.01362224 })
+ //comfort coef: is using only two levels. yes:0, no: -0.345102
+ const [comfortcoef, setcomfortcoef] = useState ({L0:0, L1: -0.345102})
 
 
 //let = initialize first to 0 the overwrite
